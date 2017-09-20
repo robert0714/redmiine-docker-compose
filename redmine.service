@@ -1,0 +1,19 @@
+#/etc/systemd/system/redmine.service
+
+[Unit]
+Description=redmine
+After=docker.service
+Requires=docker.service
+
+[Service]
+WorkingDirectory=/redmine_data/docker-redmine-data
+EnvironmentFile=/redmine_data/docker-redmine-data/env
+
+ExecStartPre=/bin/docker-compose -f /redmine_data/docker-redmine-data/docker-compose.yml down -v
+
+ExecStart=/bin/docker-compose -f /redmine_data/docker-redmine-data/docker-compose.yml up
+
+ExecStop=/bin/docker-compose  -f /redmine_data/docker-redmine-data/docker-compose.yml  stop -v
+
+[Install]
+WantedBy=multi-user.target
